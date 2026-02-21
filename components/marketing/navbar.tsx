@@ -3,11 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const navLinks = [
-  { label: "AI Academy", href: "/learn" },
-  { label: "Use Cases", href: "/articles" },
-];
-
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -21,15 +16,12 @@ export function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm text-[var(--muted-foreground)] transition-colors hover:text-white"
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            href="/learn"
+            className="text-sm text-[var(--muted-foreground)] transition-colors hover:text-white"
+          >
+            AI Academy
+          </Link>
           <a
             href="#contact"
             className="rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] transition-colors hover:bg-[var(--accent-hover)]"
@@ -72,16 +64,13 @@ export function Navbar() {
       {/* Mobile menu */}
       {mobileOpen && (
         <div className="border-t border-[var(--border)] bg-[var(--background)] px-6 py-4 md:hidden">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="block py-2 text-sm text-[var(--muted-foreground)] hover:text-white"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          <Link
+            href="/learn"
+            className="block py-2 text-sm text-[var(--muted-foreground)] hover:text-white"
+            onClick={() => setMobileOpen(false)}
+          >
+            AI Academy
+          </Link>
           <a
             href="#contact"
             className="mt-2 inline-block rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)]"
