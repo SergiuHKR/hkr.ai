@@ -1,6 +1,7 @@
 # HKR.AI — AI Consulting Platform
 
-**Status:** Pre-build
+**Status:** Phase 5 complete — LMS gamification shipped
+**Live:** [dev.hkr.ai](https://dev.hkr.ai)
 **Owner:** Sergiu Poenaru
 **Notion:** [HKR AI Platform & Business Strategy](https://www.notion.so/HKR-AI-Platform-Business-Strategy-30c814d4da5081c9a46be36c08eb0c0e)
 
@@ -21,21 +22,24 @@ The two brands cross-promote. hkr.ai gradually takes over.
 
 ## What This Platform Does
 
+### Landing Pages (Public — `/`)
+- Supabase-inspired dark design with emerald green accents
+- Marketing for the AI consulting business
+
 ### CMS (Public — `/articles/*`)
 - AI playbooks, case studies, curated guides as `.md` files rendered by Next.js
 - Dual purpose: SEO + organic traffic AND portfolio/showroom sent in sales proposals
 - Git push = publish. No admin panel. No database for content.
 
-### LMS (Private — `/learn/*`, auth-required)
-- Duolingo-style AI training platform with XP, streaks, badges, leaderboards, quizzes, video lessons
+### LMS (Private — auth-required)
+- Duolingo-style AI training platform with XP, streaks, badges, leaderboards
+- **`/learn`** — Course catalog with progress tracking
+- **`/learn/[course]/[lesson]`** — Lesson reader with MDX + completion tracking
+- **`/dashboard`** — Personal stats: XP, level, streak calendar, badges, activity
+- **`/leaderboard`** — Overall / Weekly / Season tabs + team standings
+- **`/badges`** — Aspirational badge showcase + level progression
 - Year 1: HKR internal team (~50-100 users)
 - Later: Client teams (multi-tenant architecture)
-- "What do you hate?" module as a sales trojan horse — aggregates team pain points, feeds proposals
-
-### Landing Pages (Public — `/`)
-- Supabase-inspired dark design with emerald green accents
-- Section positioning inspired by hkr.team's layout structure
-- Marketing for the AI consulting business
 
 ---
 
@@ -61,73 +65,80 @@ The two brands cross-promote. hkr.ai gradually takes over.
 
 ---
 
-## LMS — Gamification
+## LMS — Gamification (Shipped)
 
-### Progression Tiers
+### XP Level System
 
-| Level | Name | What they learn |
-|-------|------|-----------------|
-| Beginner | AI Literacy | Models, tokens, basic prompting |
-| Intermediate | Tool Users | AI tools for their role (CS, Sales, Ops) |
-| Advanced | Agent Builders | Building and deploying AI agents |
+| Level | Title | XP Required |
+|-------|-------|-------------|
+| 1 | Novice | 0 |
+| 2 | Learner | 50 |
+| 3 | Practitioner | 150 |
+| 4 | Specialist | 300 |
+| 5 | Expert | 500 |
+| 6 | Master | 800 |
+| 7 | Architect | 1200 |
+| 8 | Visionary | 1800 |
+| 9 | Legend | 2500 |
 
-First badge = "AI Literat" — everyone in HKR must earn this.
+### Badges (7 at launch)
+
+| Badge | Criteria |
+|-------|----------|
+| First Steps | Complete your first lesson |
+| AI Literate | Complete the AI Literacy course |
+| On Fire | 7-day learning streak |
+| Unstoppable | 30-day learning streak |
+| Century Club | Earn 100 XP total |
+| Speed Learner | Complete 3 lessons in a single day |
+| Early Adopter | Join during Season 1: Genesis |
 
 ### Game Mechanics
-- **XP system** — points for completing lessons, quizzes, challenges
-- **Levels** — XP thresholds unlock new levels
-- **Streaks** — consecutive days of activity (Duolingo-style)
-- **Badges** — milestone achievements
-- **Leaderboard** — real-time via Supabase Realtime, top 10 visible
-- **Team competitions** — departments compete on aggregate XP
-- **Financial bonus** — tied to completing all modules
-- **Slack integration** — announce achievements in team channels
-- **Certificates** — LinkedIn-worthy, verifiable at hkr.ai
+- **XP system** — points awarded on lesson completion, tracked per user
+- **9 levels** — Novice to Legend with progressive XP thresholds
+- **Streaks** — consecutive days of activity (Duolingo-style), 30-day calendar
+- **Badges** — milestone achievements with confetti celebration on unlock
+- **Leaderboard** — Overall / Weekly / Season tabs, scoped per organization
+- **Team standings** — departments compete on aggregate XP
+- **Organizations** — org + department/team model for multi-tenant isolation
+- **Seasons** — quarterly cumulative periods with ranking preservation
 
-### Curriculum
-- AI Literacy (mandatory for all)
-- Prompt Engineering
+### Curriculum (Current)
+- **AI Literacy** (published, 3 modules, 9 lessons, 120 XP) — mandatory for all HKR
+- **Prompt Engineering** (unpublished, coming soon)
+
+### Curriculum (Planned)
 - AI for Customer Support
 - AI for Sales
 - AI for Operations
 - Agent Building (advanced)
-
-### Content Model: Living Content
-- Not fixed courses — living knowledge base, wiki-style, continuously updated
-- But with gamified structure — paths, progression, quizzes, badges
-- Retired courses: content goes away, but user XP stays forever
 
 ---
 
 ## Tech Stack
 
 ```
-Next.js (App Router) + Supabase + Vercel + shadcn/ui
+Next.js 15 (App Router) + Supabase + Vercel + shadcn/ui
 ```
 
 | Component | Role | Why |
 |-----------|------|-----|
-| **Next.js 15 (App Router)** | Framework | SSR/SSG, route groups, industry standard |
-| **Supabase** | Auth + DB + Realtime + Storage + Edge Functions | Single backend for everything |
-| **Vercel** | Hosting | Zero-config Next.js deploys, `vercel deploy` from CLI |
+| **Next.js 15 (App Router)** | Framework | SSR/SSG, route groups, server components |
+| **Supabase** | Auth + Postgres + RLS + Storage | Single backend for everything |
+| **Vercel** | Hosting | Zero-config Next.js deploys |
 | **shadcn/ui** | Component library | Copy-paste, full ownership, Tailwind-native |
-| **Supabase UI Library** | Auth, Realtime, Storage components | shadcn-compatible, drop-in features |
-| **MDX / next-mdx-remote** | Article rendering | `.md` files to pages at build time |
-| **Framer Motion** | Animations | Optional, for subtle UI polish |
+| **Tailwind CSS v4** | Styling | Dark mode default, CSS custom properties |
+| **MDX / next-mdx-remote** | Article + lesson rendering | `.md` files to pages at build/runtime |
+| **react-confetti** | Celebrations | Badge unlock animations (8KB) |
+| **tw-animate-css** | Animations | CSS-based entrance animations |
+| **lucide-react** | Icons | Dynamic icon mapping for badges |
 
 ### Why NOT alternatives
 - **Payload CMS** — Overkill. Articles are just `.md` files.
 - **Neon** — Unnecessary second database. Supabase Postgres handles everything.
 - **Railway/Coolify** — Vercel is simpler for zero-config deploys.
 - **Moodle/Open edX** — Heavy, outdated UX, impossible to make Duolingo-like.
-
-### CLI Tools
-
-```bash
-brew install supabase/tap/supabase   # Local dev, migrations, DB management
-npm install -g vercel                 # Deploy from terminal
-npx shadcn@latest                    # Add UI components
-```
+- **Framer Motion** — Too heavy. Using react-confetti (8KB) + tw-animate-css instead.
 
 ---
 
@@ -137,35 +148,48 @@ npx shadcn@latest                    # Add UI components
 apps/hkr.ai/
 ├── app/
 │   ├── (marketing)/              # Public landing pages
-│   │   ├── page.tsx              # Homepage
-│   │   ├── about/
-│   │   ├── solutions/
-│   │   └── contact/
+│   │   └── page.tsx              # Homepage
 │   ├── (cms)/                    # Public articles
 │   │   └── articles/
-│   │       └── [slug]/page.tsx
+│   │       ├── page.tsx          # Article list
+│   │       └── [slug]/page.tsx   # Article detail
 │   ├── (lms)/                    # Auth-gated learning platform
+│   │   ├── layout.tsx            # Auth check + LmsNavbar + StatsHeader
 │   │   ├── learn/
-│   │   ├── dashboard/
-│   │   ├── leaderboard/
-│   │   └── layout.tsx            # Auth check wrapper
+│   │   │   ├── page.tsx          # Course catalog
+│   │   │   └── [courseSlug]/
+│   │   │       ├── page.tsx      # Course detail + modules
+│   │   │       └── [lessonSlug]/page.tsx  # Lesson reader + completion
+│   │   ├── dashboard/page.tsx    # Personal stats, badges, activity
+│   │   ├── leaderboard/page.tsx  # Rankings + team standings
+│   │   └── badges/page.tsx       # Badge showcase + levels
+│   ├── api/
+│   │   └── lms/complete-lesson/route.ts  # Atomic lesson completion
+│   ├── auth/callback/route.ts    # OAuth callback
+│   ├── login/page.tsx            # Google SSO
 │   ├── layout.tsx                # Root layout (dark theme, fonts)
-│   └── globals.css
+│   └── globals.css               # Design tokens
 ├── components/
-│   ├── ui/                       # shadcn/ui primitives
-│   ├── marketing/                # Hero, LogoBar, Testimonials, etc.
-│   ├── cms/                      # ArticleCard, ArticleList, MDX components
-│   └── lms/                      # CourseCard, Quiz, Leaderboard, XPBar, etc.
+│   ├── ui/                       # shadcn/ui (button, card, tabs, badge, progress, input, label)
+│   ├── marketing/                # Navbar, Hero, Footer
+│   └── lms/                      # LmsNavbar, StatsHeader, CourseCard, CompleteLessonButton,
+│                                 # AchievementCelebration, BadgeCard, BadgeGrid, StreakCalendar,
+│                                 # LeaderboardTable, LeaderboardRow, TeamStandings, DynamicIcon
 ├── content/
 │   └── articles/                 # .md files (git push = publish)
 ├── lib/
-│   └── supabase/                 # Client setup (server + browser)
-├── supabase/                     # Supabase CLI: migrations, seed, config
-│   ├── migrations/
-│   └── seed.sql
-├── public/                       # Static assets
-├── .env.local                    # Supabase keys, Vercel env
-├── CLAUDE.md                     # AI context
+│   ├── supabase/                 # Client setup (server.ts + client.ts)
+│   └── lms/                      # Core logic
+│       ├── queries.ts            # Course/lesson data access
+│       ├── levels.ts             # XP level definitions + utilities
+│       ├── streaks.ts            # Daily activity + streak calculation
+│       ├── achievements.ts       # Badge criteria checker
+│       └── gamification.ts       # Profiles, leaderboards, seasons
+├── supabase/
+│   ├── migrations/               # DB schema (3 migration files)
+│   └── seed.sql                  # AI Literacy course + gamification data
+├── .env.local                    # Supabase keys
+├── CLAUDE.md                     # AI context for Claude Code
 ├── README.md                     # This file
 └── TODO.md                       # Build phases and task tracking
 ```
@@ -173,81 +197,94 @@ apps/hkr.ai/
 ### Backend Architecture
 
 ```
-┌──────────────────────────────────────────┐
-│  Vercel                                  │
-│  ┌────────────────────────────────────┐  │
-│  │  Next.js App                       │  │
-│  │  ├── /           (marketing)       │  │
-│  │  ├── /articles/* (CMS - public)    │  │
-│  │  │   └── rendered from .md files   │  │
-│  │  ├── /learn/*    (LMS - auth)      │  │
-│  │  └── /api/*      (API routes)      │  │
-│  └────────────────────────────────────┘  │
-│                    │                     │
-│                    ▼                     │
-│             Supabase                     │
-│             ├── Auth (login)             │
-│             ├── Postgres                 │
-│             │   ├── courses, modules     │
-│             │   ├── lessons, quizzes     │
-│             │   ├── user_progress        │
-│             │   ├── achievements         │
-│             │   ├── streaks              │
-│             │   └── leaderboard (view)   │
-│             ├── Edge Functions            │
-│             │   └── XP, streaks, badges  │
-│             ├── Realtime                 │
-│             │   └── live leaderboard     │
-│             └── Storage                  │
-│                 └── video, images, media │
-└──────────────────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│  Vercel (dev.hkr.ai)                         │
+│  ┌────────────────────────────────────────┐  │
+│  │  Next.js 15 App                        │  │
+│  │  ├── /              (marketing)        │  │
+│  │  ├── /articles/*    (CMS - public)     │  │
+│  │  │   └── rendered from .md files       │  │
+│  │  ├── /learn/*       (LMS - auth)       │  │
+│  │  ├── /dashboard     (LMS - auth)       │  │
+│  │  ├── /leaderboard   (LMS - auth)       │  │
+│  │  ├── /badges        (LMS - auth)       │  │
+│  │  └── /api/lms/*     (API routes)       │  │
+│  └────────────────────────────────────────┘  │
+│                    │                          │
+│                    ▼                          │
+│             Supabase (EU West Ireland)        │
+│             ├── Auth (Google SSO)             │
+│             ├── Postgres                      │
+│             │   ├── courses, modules, lessons │
+│             │   ├── user_progress             │
+│             │   ├── organizations, teams      │
+│             │   ├── user_profiles             │
+│             │   ├── achievements              │
+│             │   ├── user_achievements         │
+│             │   ├── streaks                   │
+│             │   ├── seasons, season_rankings  │
+│             │   └── views: weekly_leaderboard │
+│             │         + team_leaderboard      │
+│             └── RLS (org-scoped policies)     │
+└──────────────────────────────────────────────┘
 ```
 
-### Gamification Data Model
+### Data Model
 
 | Table | Purpose |
 |-------|---------|
-| `courses` | Course definitions (title, description, category, tier) |
-| `modules` | Modules within courses |
-| `lessons` | Individual lessons (content, video URL, duration) |
-| `quizzes` | Quiz definitions with questions and answers |
-| `user_progress` | Tracks lesson completion, XP earned per lesson |
-| `achievements` | Badge definitions and unlock criteria |
-| `user_achievements` | Join table — when a user earns a badge |
-| `streaks` | Daily activity tracking |
-| `leaderboard` | Materialized view computed from user_progress |
-| `challenges` | Time-boxed team or individual challenges |
+| `courses` | Course definitions (title, slug, tier, published) |
+| `modules` | Sections within courses |
+| `lessons` | Individual lessons (MDX content, duration, XP reward) |
+| `user_progress` | Tracks lesson completion + XP earned |
+| `organizations` | Workspace containers (HKR, client orgs) |
+| `teams` | Departments within an organization |
+| `user_profiles` | Denormalized stats (total XP, streak, level) for fast reads |
+| `seasons` | Quarterly ranking periods |
+| `achievements` | Badge definitions with criteria (JSONB) |
+| `user_achievements` | Badges earned by users |
+| `streaks` | One row per user per active day |
+| `season_rankings` | Snapshot at season end |
+| `weekly_leaderboard` | View: XP earned this week per user |
+| `team_leaderboard` | View: aggregate XP per team |
+
+---
+
+## Deployment
+
+| Environment | URL | Purpose |
+|-------------|-----|---------|
+| Production (custom) | `https://dev.hkr.ai` | Primary URL |
+| Production (Vercel) | `https://hkr-*.vercel.app` | Fallback (always works) |
+| Local | `http://localhost:3000` | Dev server |
+
+| Service | Detail |
+|---------|--------|
+| Supabase project | `bsmhtqzzzhaieruwxixl` (EU West Ireland) |
+| Route53 zone | `Z004204135P4SRWXS410P` |
+| Auth | Google SSO via Supabase |
 
 ---
 
 ## Design Language
 
-Supabase-inspired dark theme with HKR identity.
+Supabase-minimal + terminal-style monospace numbers. Dark theme default.
 
 | Token | Value | Usage |
 |-------|-------|-------|
 | `--background` | `#0A0A0A` | Page background |
 | `--card` | `#171717` | Card backgrounds |
 | `--card-border` | `#2A2A2A` | Card/section borders |
-| `--accent` | `#3ECF8E` | CTAs, highlights, active states |
+| `--primary` | `#3ECF8E` | CTAs, highlights, XP bar, badges |
 | `--accent-hover` | `#2BB57A` | Hover states |
 | `--foreground` | `#FFFFFF` | Primary text |
-| `--muted` | `#A1A1AA` | Secondary text |
-| `--muted-foreground` | `#71717A` | Tertiary text |
+| `--muted-foreground` | `#A1A1AA` | Secondary text |
 
-### Landing Page Sections (hkr.team positioning, Supabase aesthetic)
-
-| # | Section | Treatment |
-|---|---------|-----------|
-| 1 | Navbar | Dark bar, HKR.AI logo white, nav links gray, CTA green pill |
-| 2 | Hero | Dark bg, headline white + green accent, two buttons (green primary + ghost) |
-| 3 | Social proof | Client logos horizontal scroll, muted on dark bg |
-| 4 | What we do | Bento grid feature cards with numbered steps |
-| 5 | Services | Dark stacked cards — title left, bullets + green CTA right |
-| 6 | Case studies | Dark tile cards with category tags |
-| 7 | How we work | Pilot / Prove / Scale step cards |
-| 8 | CTA section | Full-width, compelling copy, green button |
-| 9 | Footer | Darker bg, multi-column links, social icons |
+### UI Patterns
+- **Stats header strip** — compact bar below navbar with level, XP progress, streak, badges
+- **Confetti** — Robinhood-style full-screen celebration on badge unlock (green palette)
+- **Monospace** — `font-mono` for all numbers, levels, XP values
+- **Terminal symbols** — minimal iconography from lucide-react
 
 ---
 
@@ -275,7 +312,7 @@ Supabase-inspired dark theme with HKR identity.
 ## References
 
 - [Supabase + Next.js quickstart](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs)
-- [Supabase UI Library](https://supabase.com/ui/docs/getting-started/introduction)
 - [next-mdx-remote](https://github.com/hashicorp/next-mdx-remote)
 - [shadcn/ui docs](https://ui.shadcn.com)
 - [Vercel CLI](https://vercel.com/docs/cli)
+- [react-confetti](https://www.npmjs.com/package/react-confetti)
