@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-const FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
+const FRAMES = ["✶", "✸", "✹", "✺", "✹", "✸"];
 
 interface TerminalSpinnerProps {
   fps?: number;
   className?: string;
 }
 
-export function TerminalSpinner({ fps = 10, className }: TerminalSpinnerProps) {
+export function TerminalSpinner({ fps = 8, className }: TerminalSpinnerProps) {
   const [frame, setFrame] = useState(0);
 
   useEffect(() => {
