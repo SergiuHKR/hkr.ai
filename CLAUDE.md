@@ -78,3 +78,10 @@ Text tertiary:   #71717A
 ## Build Priority
 
 CMS is easiest — ship first. LMS is most urgent — internal team adoption. See `TODO.md` for the full phased checklist.
+
+## Documentation Sync
+
+After every conversation that changes the project (new features, architecture changes, pivots, decisions), **always update**:
+
+1. **`TODO.md`** — check off completed items, add new tasks, reorder priorities
+2. **`README.md`** — keep architecture, data model, and design sections in sync with reality

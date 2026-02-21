@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Edit(*)",
+      "Write(*)",
+      "MultiEdit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "LS(*)",
+      "Task(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "mcp__slack__*",
+      "mcp__notion__*",
+      "mcp__f2f74a74-dc47-43c8-8892-d2ac2681d05a__*",
+      "mcp__ec253e64-124d-470e-938a-914be8a9acb1__*",
+      "mcp__Claude_in_Chrome__*",
+      "mcp__mcp-registry__*",
+      "mcp__HiBob_MCP_Server__*",
+      "mcp__40619c95-6b45-4211-b240-1aecbf7c6c29__*",
+      "mcp__Claude_Preview__*"
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~/*)",
+      "Bash(sudo rm:*)"
+    ]
+  }
+}
