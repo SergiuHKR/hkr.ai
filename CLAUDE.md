@@ -13,6 +13,15 @@ HKR.AI — AI consulting platform with a public CMS (markdown articles), private
 | `README.md` | Full project plan: vision, architecture, data model, design language |
 | `TODO.md` | Phased build checklist (Phase 0-7) |
 | `CLAUDE.md` | This file — AI context for Claude Code |
+| `SCHEMA.md` | Canonical data model — all entities, fields, relationships, invariants |
+| `PRODUCT.md` | Product constitution — what this product is, is not, and AI guardrails |
+
+## Product Constitution
+
+**Before any schema change, new feature, or architectural decision — read `SCHEMA.md` and `PRODUCT.md`.**
+
+- `SCHEMA.md` is the source of truth for all DB entities and fields. Update it before writing migrations.
+- `PRODUCT.md` defines non-negotiables. Push back if a request contradicts it and ask for explicit confirmation before deviating.
 
 ## Repo & Git
 
@@ -98,3 +107,5 @@ After every conversation that changes the project (new features, architecture ch
 
 1. **`TODO.md`** — check off completed items, add new tasks, reorder priorities
 2. **`README.md`** — keep architecture, data model, and design sections in sync with reality
+3. **`SCHEMA.md`** — update whenever a table, field, or relationship changes
+4. **`PRODUCT.md`** — update whenever a core product decision is made or changes
