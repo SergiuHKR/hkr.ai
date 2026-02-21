@@ -9,8 +9,8 @@
 - [x] Set up Supabase client helpers (`lib/supabase/server.ts`, `lib/supabase/client.ts`)
 - [x] Create route group structure: `(marketing)`, `(cms)`, `(lms)`
 - [x] Configure `.env.local` with Supabase cloud keys
-- [ ] First deploy to Vercel (`vercel deploy`)
-- [ ] Connect hkr.ai domain in Vercel
+- [x] First deploy to Vercel
+- [x] Connect dev.hkr.ai domain (Route53 + Vercel)
 
 ## Phase 1: Landing Page (Minimal)
 - [x] Navbar component (dark, responsive, mobile menu — "AI Academy", "Use Cases")
@@ -20,20 +20,20 @@
 - [ ] SEO: metadata, Open Graph, sitemap
 
 ## Phase 2: CMS (Use Cases / Articles)
-- [ ] Set up `content/articles/` directory with sample `.md` files
-- [ ] Configure MDX rendering (`next-mdx-remote` or `@next/mdx`)
-- [ ] Article list page (`/articles`)
-- [ ] Article detail page (`/articles/[slug]`)
-- [ ] Article card component
+- [x] Set up `content/articles/` directory with sample `.md` files
+- [x] Configure MDX rendering (`next-mdx-remote` + `remark-gfm`)
+- [x] Article list page (`/articles`)
+- [x] Article detail page (`/articles/[slug]`)
+- [x] Article card component
 - [ ] Category/tag filtering
 - [ ] SEO per article (dynamic metadata from frontmatter)
 - [ ] RSS feed (optional)
 
 ## Phase 3: LMS — Auth & User Foundation
 - [x] Create Supabase hosted project (cloud — EU West Ireland)
-- [x] Set up Auth (email/password via Supabase SSR)
+- [x] Set up Auth (Google SSO via Supabase)
 - [x] Middleware for session refresh + route protection
-- [x] Sign-in / sign-up pages (shadcn/ui forms)
+- [x] Google SSO login page
 - [x] Auth callback route (`/auth/callback`)
 - [x] Auth-gated layout for `(lms)` route group
 - [x] Sign-out button component
@@ -41,31 +41,42 @@
 - [ ] `Current User Avatar` component
 
 ## Phase 4: LMS — Course Structure
-- [ ] DB schema: `courses`, `modules`, `lessons`, `quizzes` tables
-- [ ] Supabase migrations for schema
-- [ ] RLS policies (users see their own progress, admins see all)
-- [ ] Seed data: first course ("AI Literacy")
-- [ ] Course list page (`/learn`)
-- [ ] Course detail page (`/learn/[courseId]`)
-- [ ] Module list within course
-- [ ] Lesson view (video + text content)
-- [ ] Quiz component (multiple choice, submit, score)
-- [ ] Lesson completion tracking
+- [x] DB schema: `courses`, `modules`, `lessons` tables
+- [x] DB schema: `user_progress` table
+- [x] Supabase migrations for schema
+- [x] RLS policies (users see their own progress)
+- [x] Seed data: first course ("AI Literacy" — 3 modules, 9 lessons)
+- [x] Course list page (`/learn`)
+- [x] Course detail page (`/learn/[courseSlug]`)
+- [x] Module list within course
+- [x] Lesson view (MDX markdown content)
+- [x] Lesson completion tracking
+- [x] Progress bar per course
+- [x] Prev/next lesson navigation
 
 ## Phase 5: LMS — Gamification
-- [ ] DB schema: `user_progress`, `achievements`, `user_achievements`, `streaks`
-- [ ] XP system: award XP on lesson/quiz completion
-- [ ] Streak tracking: daily activity check
-- [ ] Badge definitions and unlock criteria
-- [ ] Badge unlock triggers (Supabase Edge Functions or DB triggers)
-- [ ] XP bar / level display component
-- [ ] Streak counter component
-- [ ] Badge showcase component
-- [ ] Leaderboard (materialized view or computed query)
-- [ ] Leaderboard page with Supabase Realtime subscription
-- [ ] Team competitions (aggregate XP by department)
+- [x] DB schema: `organizations`, `teams`, `user_profiles`, `seasons`
+- [x] DB schema: `achievements`, `user_achievements`, `streaks`, `season_rankings`
+- [x] DB views: `weekly_leaderboard`, `team_leaderboard`
+- [x] RLS policies scoped per organization
+- [x] Seed data: HKR org, General team, Season 1 (Genesis), 7 achievement definitions
+- [x] XP level system (9 levels: Novice → Legend)
+- [x] Streak tracking (daily activity, consecutive day calculation)
+- [x] Achievement criteria checker (7 badge types)
+- [x] Server-side API route (`/api/lms/complete-lesson`) for atomic lesson completion
+- [x] Updated CompleteLessonButton (calls API, shows celebrations)
+- [x] Stats header strip (level, XP progress, streak, badges — always visible)
+- [x] LMS navbar with Dashboard + Leaderboard links
+- [x] Achievement celebration modal with react-confetti (green palette)
+- [x] Badge cards (earned glow vs locked dimmed)
+- [x] Streak calendar (30-day grid)
+- [x] Dashboard page (`/dashboard`) — profile, XP, streak, badges, activity
+- [x] Leaderboard page (`/leaderboard`) — Overall/Weekly/Season tabs + team standings
+- [x] Badges showcase page (`/badges`) — aspirational grid with level progression
+- [x] Deploy to Vercel production
 
 ## Phase 6: LMS — Advanced Features
+- [ ] Quiz component (multiple choice, submit, score)
 - [ ] "What do you hate?" survey module
 - [ ] Mandatory video player (no skip, 1x/1.5x speed)
 - [ ] Certificate generation (verifiable URL at hkr.ai)

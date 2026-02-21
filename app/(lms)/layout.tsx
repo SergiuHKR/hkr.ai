@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { Navbar } from "@/components/marketing/navbar";
+import { LmsNavbar } from "@/components/lms/lms-navbar";
+import { StatsHeader } from "@/components/lms/stats-header";
 
 export default async function LMSLayout({
   children,
@@ -18,8 +19,11 @@ export default async function LMSLayout({
 
   return (
     <>
-      <Navbar />
-      <div className="pt-16">{children}</div>
+      <LmsNavbar />
+      <div className="pt-16">
+        <StatsHeader />
+        {children}
+      </div>
     </>
   );
 }

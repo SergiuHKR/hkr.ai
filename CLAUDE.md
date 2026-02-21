@@ -75,6 +75,19 @@ Text tertiary:   #71717A
 | `(cms)` | `/articles/*` | Public | Blog / playbooks |
 | `(lms)` | `/learn/*`, `/dashboard`, `/leaderboard` | Required | Training platform |
 
+## Deployment
+
+| Environment | URL | Purpose |
+|-------------|-----|---------|
+| Production (custom) | `https://dev.hkr.ai` | Primary URL (pending DNS migration to Route53) |
+| Production (Vercel) | `https://hkr-45ttev9gl-hkrteam.vercel.app` | Fallback — always works, use for testing |
+| Local | `http://localhost:3000` | Dev server |
+
+**Supabase project:** `bsmhtqzzzhaieruwxixl` (West EU Ireland)
+**Route53 hosted zone:** `Z004204135P4SRWXS410P`
+
+When testing the live site, use the Vercel fallback URL if `dev.hkr.ai` isn't resolving yet.
+
 ## Build Priority
 
 CMS is easiest — ship first. LMS is most urgent — internal team adoption. See `TODO.md` for the full phased checklist.
