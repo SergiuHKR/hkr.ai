@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 const navLinks = [
   { label: "AI Academy", href: "/learn" },
@@ -14,20 +15,20 @@ export function Navbar() {
     <nav className="fixed top-0 z-50 w-full border-b border-[var(--border)] bg-[var(--background)]/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         {/* Logo */}
-        <a href="/" className="text-xl font-bold tracking-tight">
+        <Link href="/" className="text-xl font-bold tracking-tight">
           HKR<span className="text-[var(--primary)]">.AI</span>
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <div className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="text-sm text-[var(--muted-foreground)] transition-colors hover:text-white"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <a
             href="#contact"
@@ -72,14 +73,14 @@ export function Navbar() {
       {mobileOpen && (
         <div className="border-t border-[var(--border)] bg-[var(--background)] px-6 py-4 md:hidden">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="block py-2 text-sm text-[var(--muted-foreground)] hover:text-white"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
           <a
             href="#contact"

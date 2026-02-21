@@ -4,6 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function LoginPage() {
   const [error, setError] = useState("");
@@ -32,9 +33,9 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm">
-        <a href="/" className="mb-8 block text-center text-2xl font-bold">
+        <Link href="/" className="mb-8 block text-center text-2xl font-bold">
           HKR<span className="text-[var(--primary)]">.AI</span>
-        </a>
+        </Link>
 
         <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-8">
           <h1 className="mb-2 text-xl font-bold">Sign in</h1>
