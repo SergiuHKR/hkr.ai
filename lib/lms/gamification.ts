@@ -54,18 +54,30 @@ export async function getOrCreateProfile(
 
   if (existing) return existing;
 
-  // Create new profile with HKR org as default
-  const { data: hkrOrg } = await supabase
-    .from("organizations")
-    .select("id")
-    .eq("slug", "hkr")
-    .single();
+  // Create new profile — try to assign HKR org/team as defaults
+  let orgId: string | null = null;
+  let teamId: string | null = null;
 
-  const { data: generalTeam } = await supabase
-    .from("teams")
-    .select("id")
-    .eq("slug", "general")
-    .single();
+  try {
+    const { data: hkrOrg } = await supabase
+      .from("organizations")
+      .select("id")
+      .eq("slug", "hkr")
+      .single();
+    orgId = hkrOrg?.id || null;
+
+    if (orgId) {
+      const { data: generalTeam } = await supabase
+        .from("teams")
+        .select("id")
+        .eq("slug", "general")
+        .eq("org_id", orgId)
+        .single();
+      teamId = generalTeam?.id || null;
+    }
+  } catch {
+    // Org/team lookup failed — proceed without defaults
+  }
 
   const { data: newProfile, error } = await supabase
     .from("user_profiles")
@@ -73,13 +85,37 @@ export async function getOrCreateProfile(
       user_id: userId,
       display_name: displayName || null,
       avatar_url: avatarUrl || null,
-      org_id: hkrOrg?.id || null,
-      team_id: generalTeam?.id || null,
+      org_id: orgId,
+      team_id: teamId,
     })
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    // If insert fails (e.g. race condition), try reading again
+    const { data: retryProfile } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .eq("user_id", userId)
+      .single();
+
+    if (retryProfile) return retryProfile;
+
+    // Return a default profile object so the app doesn't crash
+    return {
+      user_id: userId,
+      display_name: displayName || null,
+      avatar_url: avatarUrl || null,
+      total_xp: 0,
+      current_streak: 0,
+      longest_streak: 0,
+      level: 1,
+      last_activity_date: null,
+      org_id: null,
+      team_id: null,
+    } as UserProfile;
+  }
+
   return newProfile;
 }
 
