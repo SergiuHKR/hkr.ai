@@ -6,8 +6,6 @@ export type UserProfile = {
   display_name: string | null;
   avatar_url: string | null;
   total_xp: number;
-  current_streak: number;
-  longest_streak: number;
   level: number;
   last_activity_date: string | null;
   org_id: string | null;
@@ -107,8 +105,6 @@ export async function getOrCreateProfile(
       display_name: displayName || null,
       avatar_url: avatarUrl || null,
       total_xp: 0,
-      current_streak: 0,
-      longest_streak: 0,
       level: 1,
       last_activity_date: null,
       org_id: null,
@@ -123,9 +119,7 @@ export async function getOrCreateProfile(
 export async function updateProfileStats(
   supabase: SupabaseClient,
   userId: string,
-  xpToAdd: number,
-  currentStreak: number,
-  longestStreak: number
+  xpToAdd: number
 ): Promise<{ newTotalXp: number; newLevel: number; leveledUp: boolean }> {
   const profile = await getOrCreateProfile(supabase, userId);
   const newTotalXp = profile.total_xp + xpToAdd;
@@ -138,8 +132,6 @@ export async function updateProfileStats(
     .update({
       total_xp: newTotalXp,
       level: newLevel,
-      current_streak: currentStreak,
-      longest_streak: Math.max(longestStreak, profile.longest_streak),
       last_activity_date: new Date().toISOString().split("T")[0],
     })
     .eq("user_id", userId);

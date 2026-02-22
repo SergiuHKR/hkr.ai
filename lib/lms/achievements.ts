@@ -39,7 +39,7 @@ export async function checkAndAwardAchievements(
   // Get user profile for stats
   const { data: profile } = await supabase
     .from("user_profiles")
-    .select("total_xp, current_streak")
+    .select("total_xp")
     .eq("user_id", userId)
     .single();
 
@@ -83,10 +83,6 @@ export async function checkAndAwardAchievements(
 
       case "course_complete":
         earned = courseCompletions.has(criteria.course_slug as string);
-        break;
-
-      case "streak":
-        earned = (profile?.current_streak || 0) >= ((criteria.days as number) || 7);
         break;
 
       case "xp_total":

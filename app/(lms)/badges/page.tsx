@@ -36,7 +36,7 @@ export default async function BadgesPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Badges & Achievements</h1>
         <p className="mt-2 text-[var(--muted-foreground)]">
-          Earn badges by completing lessons, maintaining streaks, and leveling up.
+          Earn badges by completing lessons, courses, and leveling up.
           {" "}
           <span className="font-mono text-[var(--primary)]">
             {earnedAchievements.length}/{allAchievements.length}

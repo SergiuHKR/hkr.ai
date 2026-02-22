@@ -7,8 +7,10 @@ export default function Home() {
   return (
     <>
       <Navbar />
+      <main id="main-content">
       <Hero />
       <CaseStudies />
+      </main>
       <Footer />
     </>
   );

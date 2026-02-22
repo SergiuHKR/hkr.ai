@@ -19,6 +19,8 @@ export function ArticleCard({ article }: { article: ArticleMeta }) {
         <span>{article.author}</span>
         <span>&middot;</span>
         <span>{new Date(article.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+        <span>&middot;</span>
+        <span>{article.readingTime} min read</span>
       </div>
     </a>
   );

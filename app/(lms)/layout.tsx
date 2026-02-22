@@ -20,7 +20,7 @@ export default async function LMSLayout({
   return (
     <>
       <LmsNavbar />
-      <div className="pt-16">
+      <div id="main-content" className="pt-16">
         <StatsHeader />
         {children}
       </div>

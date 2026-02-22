@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextRequest, NextResponse } from "next/server";
-import { recordDailyActivity } from "@/lib/lms/streaks";
 import { checkAndAwardAchievements } from "@/lib/lms/achievements";
 import { getOrCreateProfile, updateProfileStats } from "@/lib/lms/gamification";
 import { getLevelForXp } from "@/lib/lms/levels";
@@ -58,25 +57,17 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // 3. Record daily streak activity
-  const { currentStreak, longestStreak } = await recordDailyActivity(
-    supabase,
-    user.id
-  );
-
-  // 4. Update profile stats (XP, level, streak)
+  // 3. Update profile stats (XP, level)
   const { newTotalXp, newLevel, leveledUp } = await updateProfileStats(
     supabase,
     user.id,
-    xpReward,
-    currentStreak,
-    longestStreak
+    xpReward
   );
 
-  // 5. Check for new achievements
+  // 4. Check for new achievements
   const newAchievements = await checkAndAwardAchievements(supabase, user.id);
 
-  // 6. Get level info for response
+  // 5. Get level info for response
   const levelInfo = getLevelForXp(newTotalXp);
 
   return NextResponse.json({
@@ -85,7 +76,6 @@ export async function POST(request: NextRequest) {
     level: newLevel,
     levelTitle: levelInfo.title,
     levelUp: leveledUp,
-    currentStreak,
     newAchievements: newAchievements.map((a) => ({
       id: a.id,
       title: a.title,

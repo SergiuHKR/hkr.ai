@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getOrCreateProfile } from "@/lib/lms/gamification";
 import { getLevelForXp, getXpProgressPercent, getXpForNextLevel } from "@/lib/lms/levels";
 import Link from "next/link";
-import { Flame, Award } from "lucide-react";
+import { Award } from "lucide-react";
 
 export async function StatsHeader() {
   try {
@@ -64,26 +64,14 @@ export async function StatsHeader() {
 
           <span className="text-[var(--border)]">|</span>
 
-          {/* Streak */}
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-1 text-[var(--muted-foreground)] transition-colors hover:text-white"
-          >
-            <Flame className={`h-3.5 w-3.5 ${profile.current_streak > 0 ? "text-orange-400" : ""}`} />
-            <span className="font-mono">{profile.current_streak}-day</span>
-            <span className="hidden sm:inline">streak</span>
-          </Link>
-
-          <span className="hidden text-[var(--border)] sm:inline">|</span>
-
           {/* Badges */}
           <Link
-            href="/dashboard"
-            className="hidden items-center gap-1 text-[var(--muted-foreground)] transition-colors hover:text-white sm:flex"
+            href="/badges"
+            className="flex items-center gap-1 text-[var(--muted-foreground)] transition-colors hover:text-white"
           >
             <Award className="h-3.5 w-3.5 text-[var(--primary)]" />
             <span className="font-mono">{badgeCount || 0}</span>
-            <span>badges</span>
+            <span className="hidden sm:inline">badges</span>
           </Link>
         </div>
       </div>

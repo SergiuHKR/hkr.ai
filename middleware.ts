@@ -29,8 +29,8 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protect /learn, /dashboard, /leaderboard — redirect to login if not authenticated
-  const protectedPaths = ["/learn", "/dashboard", "/leaderboard"];
+  // Protect /learn, /dashboard, /leaderboard, /badges — redirect to login if not authenticated
+  const protectedPaths = ["/learn", "/dashboard", "/leaderboard", "/badges", "/admin", "/profile"];
   const isProtected = protectedPaths.some((p) =>
     request.nextUrl.pathname.startsWith(p),
   );
@@ -53,5 +53,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/learn/:path*", "/dashboard/:path*", "/leaderboard/:path*", "/login", "/signup"],
+  matcher: ["/learn/:path*", "/dashboard/:path*", "/leaderboard/:path*", "/badges/:path*", "/admin/:path*", "/profile/:path*", "/login", "/signup"],
 };

@@ -33,7 +33,7 @@ export function Footer() {
         </div>
 
         {/* Link columns */}
-        <div className="flex gap-16">
+        <div className="flex flex-wrap gap-12 sm:gap-16">
           {columns.map((col) => (
             <div key={col.title}>
               <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">

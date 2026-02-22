@@ -11,10 +11,24 @@ export interface ArticleMeta {
   category: string;
   date: string;
   author: string;
+  readingTime: number;
 }
 
 export interface Article extends ArticleMeta {
   content: string;
+}
+
+/** Estimate reading time in minutes (avg 200 words/min) */
+function estimateReadingTime(text: string): number {
+  const words = text.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200));
+}
+
+/** Get unique categories from all articles */
+export function getCategories(): string[] {
+  const articles = getAllArticles();
+  const cats = new Set(articles.map((a) => a.category).filter(Boolean));
+  return Array.from(cats).sort();
 }
 
 export function getAllArticles(): ArticleMeta[] {
@@ -23,7 +37,7 @@ export function getAllArticles(): ArticleMeta[] {
   const articles = files.map((filename) => {
     const slug = filename.replace(/\.md$/, "");
     const raw = fs.readFileSync(path.join(articlesDir, filename), "utf-8");
-    const { data } = matter(raw);
+    const { data, content } = matter(raw);
 
     return {
       slug,
@@ -32,6 +46,7 @@ export function getAllArticles(): ArticleMeta[] {
       category: data.category ?? "",
       date: data.date ?? "",
       author: data.author ?? "",
+      readingTime: estimateReadingTime(content),
     };
   });
 
@@ -54,6 +69,7 @@ export function getArticle(slug: string): Article | null {
     category: data.category ?? "",
     date: data.date ?? "",
     author: data.author ?? "",
+    readingTime: estimateReadingTime(content),
     content,
   };
 }
