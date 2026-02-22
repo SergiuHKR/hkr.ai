@@ -43,6 +43,9 @@
 }
 
 @theme inline {
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: ui-monospace, monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -126,5 +129,21 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans), sans-serif;
+  }
+
+  /* DM Serif Display — h1, h2, h5, h6 (mirrors hkr.team hierarchy) */
+  h1, h2, h5, h6 {
+    font-family: var(--font-serif), serif;
+  }
+
+  /* DM Sans — h3, h4 stay utilitarian */
+  h3, h4 {
+    font-family: var(--font-sans), sans-serif;
+  }
+
+  /* Monospace — code elements */
+  pre, code, kbd, samp {
+    font-family: var(--font-mono);
   }
 }
