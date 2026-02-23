@@ -146,7 +146,7 @@ export async function createCourse(formData: FormData) {
   const title = (formData.get("title") as string)?.trim();
   const slug = (formData.get("slug") as string)?.trim().toLowerCase().replace(/\s+/g, "-");
   const description = (formData.get("description") as string)?.trim() || null;
-  const tier = (formData.get("tier") as string) || "free";
+  const tier = (formData.get("tier") as string) || "beginner";
   const is_published = formData.get("is_published") === "true";
 
   if (!title) return { error: "Title is required" };
@@ -179,7 +179,7 @@ export async function createCourse(formData: FormData) {
 export async function updateCourse(courseId: string, formData: FormData) {
   const title = (formData.get("title") as string)?.trim();
   const description = (formData.get("description") as string)?.trim() || null;
-  const tier = (formData.get("tier") as string) || "free";
+  const tier = (formData.get("tier") as string) || "beginner";
   const is_published = formData.get("is_published") === "true";
 
   if (!title) return { error: "Title is required" };

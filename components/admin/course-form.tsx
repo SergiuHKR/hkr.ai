@@ -84,14 +84,15 @@ export function CreateCourseButton() {
           </div>
           <div className="flex gap-4">
             <div className="flex-1">
-              <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Tier</label>
+              <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Difficulty</label>
               <select
                 name="tier"
-                defaultValue="free"
+                defaultValue="beginner"
                 className="h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 text-sm"
               >
-                <option value="free">Free</option>
-                <option value="pro">Pro</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
               </select>
             </div>
             <div className="flex items-end gap-2 pb-1">
@@ -149,14 +150,15 @@ export function EditCourseButton({ course }: { course: Course }) {
           </div>
           <div className="flex gap-4">
             <div className="flex-1">
-              <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Tier</label>
+              <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Difficulty</label>
               <select
                 name="tier"
                 defaultValue={course.tier}
                 className="h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 text-sm"
               >
-                <option value="free">Free</option>
-                <option value="pro">Pro</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
               </select>
             </div>
             <div className="flex items-end gap-2 pb-1">
