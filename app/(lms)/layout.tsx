@@ -5,6 +5,8 @@ import { StatsHeader } from "@/components/lms/stats-header";
 import { getUserRole } from "@/lib/lms/roles";
 import { getOrCreateProfile } from "@/lib/lms/gamification";
 import { getLevelForXp } from "@/lib/lms/levels";
+import { SignOutButton } from "@/components/lms/sign-out-button";
+import { ShieldX } from "lucide-react";
 
 export default async function LMSLayout({
   children,
@@ -31,7 +33,26 @@ export default async function LMSLayout({
     ),
   ]);
 
-  const level = profile ? getLevelForXp(profile.total_xp) : undefined;
+  // Gate: user must belong to an org (via domain or allowlist)
+  if (!profile || !profile.org_id) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center px-6">
+        <div className="max-w-sm rounded-xl border border-[var(--border)] bg-[var(--card)] p-8 text-center">
+          <ShieldX className="mx-auto h-10 w-10 text-red-400" />
+          <h1 className="mt-4 text-xl font-bold">Access Restricted</h1>
+          <p className="mt-3 text-sm leading-relaxed text-[var(--muted-foreground)]">
+            This is a private learning platform. Your email is not on the access
+            list. Contact your manager or administrator for access.
+          </p>
+          <div className="mt-6">
+            <SignOutButton />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const level = getLevelForXp(profile.total_xp);
 
   return (
     <>
