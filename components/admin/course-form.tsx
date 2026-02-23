@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { createCourse, updateCourse, deleteCourse, toggleCoursePublish, setCourseTags } from "@/app/(lms)/admin/actions";
+import { createCourse, updateCourse, deleteCourse, toggleCoursePublish, setCourseTags, reorderCourse } from "@/app/(lms)/admin/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,14 +23,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Tag } from "lucide-react";
+import { Plus, Pencil, Trash2, Tag, ChevronUp, ChevronDown } from "lucide-react";
 
 type Course = {
   id: string;
   slug: string;
   title: string;
   description: string | null;
-  tier: string;
   is_published: boolean;
   sort_order: number;
 };
@@ -82,25 +81,11 @@ export function CreateCourseButton() {
             <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Description</label>
             <Textarea name="description" rows={3} className="bg-[var(--background)]" />
           </div>
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Difficulty</label>
-              <select
-                name="tier"
-                defaultValue="beginner"
-                className="h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 text-sm"
-              >
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-              </select>
-            </div>
-            <div className="flex items-end gap-2 pb-1">
-              <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" name="is_published" value="true" className="rounded" />
-                Published
-              </label>
-            </div>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-sm">
+              <input type="checkbox" name="is_published" value="true" className="rounded" />
+              Published
+            </label>
           </div>
           {error && <p className="text-xs text-red-400">{error}</p>}
           <Button type="submit" disabled={isPending} className="w-full">
@@ -148,31 +133,17 @@ export function EditCourseButton({ course }: { course: Course }) {
             <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Description</label>
             <Textarea name="description" rows={3} defaultValue={course.description || ""} className="bg-[var(--background)]" />
           </div>
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Difficulty</label>
-              <select
-                name="tier"
-                defaultValue={course.tier}
-                className="h-10 w-full rounded-md border border-[var(--border)] bg-[var(--background)] px-3 text-sm"
-              >
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-              </select>
-            </div>
-            <div className="flex items-end gap-2 pb-1">
-              <label className="flex items-center gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  name="is_published"
-                  value="true"
-                  defaultChecked={course.is_published}
-                  className="rounded"
-                />
-                Published
-              </label>
-            </div>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                name="is_published"
+                value="true"
+                defaultChecked={course.is_published}
+                className="rounded"
+              />
+              Published
+            </label>
           </div>
           {error && <p className="text-xs text-red-400">{error}</p>}
           <Button type="submit" disabled={isPending} className="w-full">
@@ -318,5 +289,46 @@ export function CourseTagsButton({
         </Button>
       </DialogContent>
     </Dialog>
+  );
+}
+
+// ─── Reorder Course (Move Up / Down) ────────────────────────────────────────
+
+export function ReorderCourseButtons({
+  courseId,
+  isFirst,
+  isLast,
+}: {
+  courseId: string;
+  isFirst: boolean;
+  isLast: boolean;
+}) {
+  const [isPending, startTransition] = useTransition();
+
+  function move(direction: "up" | "down") {
+    startTransition(async () => {
+      await reorderCourse(courseId, direction);
+    });
+  }
+
+  return (
+    <div className="flex flex-col gap-0.5">
+      <button
+        onClick={() => move("up")}
+        disabled={isPending || isFirst}
+        className="rounded p-0.5 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--background)] hover:text-white disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-[var(--muted-foreground)]"
+        title="Move up"
+      >
+        <ChevronUp className="h-3 w-3" />
+      </button>
+      <button
+        onClick={() => move("down")}
+        disabled={isPending || isLast}
+        className="rounded p-0.5 text-[var(--muted-foreground)] transition-colors hover:bg-[var(--background)] hover:text-white disabled:opacity-20 disabled:hover:bg-transparent disabled:hover:text-[var(--muted-foreground)]"
+        title="Move down"
+      >
+        <ChevronDown className="h-3 w-3" />
+      </button>
+    </div>
   );
 }

@@ -2,15 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getCourseBySlug, getCompletedLessonIds } from "@/lib/lms/queries";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CheckCircle2, Circle, Clock, Zap } from "lucide-react";
-
-const tierColors: Record<string, string> = {
-  beginner: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-  intermediate: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  advanced: "bg-rose-500/10 text-rose-400 border-rose-500/20",
-};
 
 export default async function CourseDetailPage({
   params,
@@ -59,6 +52,15 @@ export default async function CourseDetailPage({
     if (nextLessonSlug) break;
   }
 
+  // Fetch course tags
+  const { data: courseTagRows } = await supabase
+    .from("course_tags")
+    .select("tags(name)")
+    .eq("course_id", course.id);
+  const courseTags = (courseTagRows || [])
+    .map((ct) => (ct.tags as unknown as { name: string })?.name)
+    .filter(Boolean);
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
       {/* Breadcrumb */}
@@ -73,12 +75,14 @@ export default async function CourseDetailPage({
       {/* Course header */}
       <div className="mb-8">
         <div className="mb-3 flex items-center gap-3">
-          <Badge
-            variant="outline"
-            className={tierColors[course.tier] || tierColors.beginner}
-          >
-            {course.tier}
-          </Badge>
+          {courseTags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full bg-[var(--primary)]/10 px-2.5 py-0.5 text-xs font-medium text-[var(--primary)]"
+            >
+              {tag}
+            </span>
+          ))}
           <span className="text-xs text-[var(--muted-foreground)]">
             {totalLessons} lessons
           </span>

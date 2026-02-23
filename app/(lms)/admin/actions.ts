@@ -146,7 +146,6 @@ export async function createCourse(formData: FormData) {
   const title = (formData.get("title") as string)?.trim();
   const slug = (formData.get("slug") as string)?.trim().toLowerCase().replace(/\s+/g, "-");
   const description = (formData.get("description") as string)?.trim() || null;
-  const tier = (formData.get("tier") as string) || "beginner";
   const is_published = formData.get("is_published") === "true";
 
   if (!title) return { error: "Title is required" };
@@ -165,7 +164,7 @@ export async function createCourse(formData: FormData) {
 
   const { error } = await supabase
     .from("courses")
-    .insert({ title, slug, description, tier, is_published, sort_order });
+    .insert({ title, slug, description, is_published, sort_order });
 
   if (error) {
     if (error.code === "23505") return { error: "Course slug already exists" };
@@ -179,7 +178,6 @@ export async function createCourse(formData: FormData) {
 export async function updateCourse(courseId: string, formData: FormData) {
   const title = (formData.get("title") as string)?.trim();
   const description = (formData.get("description") as string)?.trim() || null;
-  const tier = (formData.get("tier") as string) || "beginner";
   const is_published = formData.get("is_published") === "true";
 
   if (!title) return { error: "Title is required" };
@@ -187,7 +185,7 @@ export async function updateCourse(courseId: string, formData: FormData) {
   const { supabase } = await requireAdmin();
   const { error } = await supabase
     .from("courses")
-    .update({ title, description, tier, is_published })
+    .update({ title, description, is_published })
     .eq("id", courseId);
 
   if (error) return { error: error.message };
@@ -210,6 +208,51 @@ export async function toggleCoursePublish(courseId: string, isPublished: boolean
     .update({ is_published: isPublished })
     .eq("id", courseId);
   if (error) return { error: error.message };
+  revalidatePath("/admin/courses");
+  return { success: true };
+}
+
+// ─── Course Reorder ──────────────────────────────────────────────────────────
+
+export async function reorderCourse(courseId: string, direction: "up" | "down") {
+  const { supabase } = await requireAdmin();
+
+  // Get the current course
+  const { data: current } = await supabase
+    .from("courses")
+    .select("id, sort_order")
+    .eq("id", courseId)
+    .single();
+  if (!current) return { error: "Course not found" };
+
+  // Find the adjacent course
+  const { data: adjacent } = await supabase
+    .from("courses")
+    .select("id, sort_order")
+    .order("sort_order", { ascending: direction === "up" })
+    .filter(
+      "sort_order",
+      direction === "up" ? "lt" : "gt",
+      current.sort_order
+    )
+    .limit(1)
+    .single();
+
+  if (!adjacent) return { error: `No course to swap with (already at ${direction === "up" ? "top" : "bottom"})` };
+
+  // Swap sort_order values
+  const { error: e1 } = await supabase
+    .from("courses")
+    .update({ sort_order: adjacent.sort_order })
+    .eq("id", current.id);
+  if (e1) return { error: e1.message };
+
+  const { error: e2 } = await supabase
+    .from("courses")
+    .update({ sort_order: current.sort_order })
+    .eq("id", adjacent.id);
+  if (e2) return { error: e2.message };
+
   revalidatePath("/admin/courses");
   return { success: true };
 }

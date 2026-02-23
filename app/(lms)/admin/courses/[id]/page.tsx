@@ -93,8 +93,7 @@ export default async function AdminCourseDetailPage({
           <div>
             <h1 className="text-2xl font-bold">{course.title}</h1>
             <p className="text-sm text-[var(--muted-foreground)]">
-              /{course.slug} · {course.tier} ·{" "}
-              {course.is_published ? "Published" : "Draft"}
+              /{course.slug} · {course.is_published ? "Published" : "Draft"}
             </p>
           </div>
           <CreateModuleButton courseId={id} />

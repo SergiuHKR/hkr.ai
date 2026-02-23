@@ -11,6 +11,17 @@ export default async function LearnPage() {
 
   const courses = await getCoursesWithProgress(supabase);
 
+  // Fetch course tags for display
+  const { data: courseTags } = await supabase
+    .from("course_tags")
+    .select("course_id, tags(name)");
+
+  const courseTagMap = new Map<string, { name: string }[]>();
+  for (const ct of courseTags || []) {
+    if (!courseTagMap.has(ct.course_id)) courseTagMap.set(ct.course_id, []);
+    if (ct.tags) courseTagMap.get(ct.course_id)!.push(ct.tags as unknown as { name: string });
+  }
+
   return (
     <main className="mx-auto max-w-4xl px-6 py-12">
       {/* Header */}
@@ -28,7 +39,11 @@ export default async function LearnPage() {
       {courses.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2">
           {courses.map((course) => (
-            <CourseCard key={course.id} course={course} />
+            <CourseCard
+              key={course.id}
+              course={course}
+              tags={courseTagMap.get(course.id)}
+            />
           ))}
         </div>
       ) : (

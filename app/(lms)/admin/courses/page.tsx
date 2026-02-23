@@ -5,6 +5,7 @@ import {
   DeleteCourseButton,
   TogglePublishButton,
   CourseTagsButton,
+  ReorderCourseButtons,
 } from "@/components/admin/course-form";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
@@ -14,7 +15,7 @@ export default async function AdminCoursesPage() {
 
   const { data: courses } = await supabase
     .from("courses")
-    .select("id, slug, title, description, tier, is_published, sort_order, created_at")
+    .select("id, slug, title, description, is_published, sort_order, created_at")
     .order("sort_order");
 
   // Count lessons per course
@@ -66,15 +67,19 @@ export default async function AdminCoursesPage() {
             slug: string;
             title: string;
             description: string | null;
-            tier: string;
             is_published: boolean;
             sort_order: number;
-          }) => (
+          }, index: number) => (
             <div
               key={course.id}
               className="flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--card)] p-4"
             >
               <div className="flex items-center gap-4">
+                <ReorderCourseButtons
+                  courseId={course.id}
+                  isFirst={index === 0}
+                  isLast={index === (courses?.length || 1) - 1}
+                />
                 <div>
                   <div className="flex items-center gap-2">
                     <h3 className="font-medium text-white">{course.title}</h3>
@@ -97,8 +102,7 @@ export default async function AdminCoursesPage() {
                     )}
                   </div>
                   <p className="text-xs text-[var(--muted-foreground)]">
-                    /{course.slug} · {lessonCounts.get(course.id) || 0} lessons ·{" "}
-                    {course.tier}
+                    /{course.slug} · {lessonCounts.get(course.id) || 0} lessons
                   </p>
                 </div>
               </div>

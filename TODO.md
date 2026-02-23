@@ -59,7 +59,7 @@ Last verified: 2026-02-22
 - [x] `/badges` added to middleware matcher for protected paths
 
 ## Phase 4: LMS — Course Structure
-- [x] DB schema: `courses` table (with `tier`, `is_published`, `sort_order`)
+- [x] DB schema: `courses` table (with `is_published`, `sort_order`)
 - [x] DB schema: `modules` table (course -> module grouping)
 - [x] DB schema: `lessons` table (with `module_id` FK, `content_md`, `duration_minutes`, `sort_order`)
 - [x] DB schema: `user_progress` table (with `xp_earned`)
@@ -291,7 +291,7 @@ All admin pages are currently read-only. This phase adds real Create/Update/Dele
 - [x] Remove allowlist email: delete button per email row
 
 ### Courses: Full CRUD
-- [x] Create course: form (title, slug, description, tier, is_published)
+- [x] Create course: form (title, slug, description, is_published)
 - [x] Edit course: modal edit for course metadata
 - [x] Delete course: delete button with confirmation dialog
 - [x] Toggle publish: click Published/Draft badge to toggle
@@ -315,6 +315,13 @@ All admin pages are currently read-only. This phase adds real Create/Update/Dele
 
 ### Course-Tag Assignment
 - [x] Assign tags to course: checkbox dialog on course list
+
+### Course Reorder
+- [x] Drop `tier` column from courses table (migration `20260223040000`)
+- [x] Remove tier from all admin forms, server actions, and public pages (use tags instead)
+- [x] Update SCHEMA.md to remove tier field
+- [x] Move up/down buttons for courses in admin course list
+- [x] Server actions for reorderCourse (swap sort_order with adjacent course)
 
 ### Infrastructure
 - [x] Server Actions (`app/(lms)/admin/actions.ts`) — all admin mutations

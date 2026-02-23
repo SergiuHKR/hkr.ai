@@ -5,7 +5,6 @@ export type Course = {
   slug: string;
   title: string;
   description: string | null;
-  tier: string;
   cover_image: string | null;
   sort_order: number;
 };

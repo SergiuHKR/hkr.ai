@@ -50,7 +50,7 @@ Teams exist within orgs for leaderboard grouping and departmental organization.
 These tables exist in the database today (deployed via Supabase migrations).
 
 ### `courses`
-A course is a collection of modules. Visibility will be determined by tags (not yet built).
+A course is a collection of modules. Visibility is determined by tags (tag-based content targeting).
 
 | Field | Type | Notes |
 |-------|------|-------|
@@ -58,7 +58,6 @@ A course is a collection of modules. Visibility will be determined by tags (not 
 | `slug` | `text` UNIQUE | |
 | `title` | `text` | |
 | `description` | `text` | |
-| `tier` | `text` | `beginner \| intermediate \| advanced` (check constraint) |
 | `cover_image` | `text` | |
 | `is_published` | `bool` | Default `false` |
 | `sort_order` | `int` | Default 0 |

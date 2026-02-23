@@ -1,18 +1,8 @@
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import type { CourseWithProgress } from "@/lib/lms/queries";
 
-const tierColors: Record<string, string> = {
-  beginner:
-    "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20",
-  intermediate:
-    "bg-amber-500/10 text-amber-400 border-amber-500/20 hover:bg-amber-500/20",
-  advanced:
-    "bg-rose-500/10 text-rose-400 border-rose-500/20 hover:bg-rose-500/20",
-};
-
-export function CourseCard({ course }: { course: CourseWithProgress }) {
+export function CourseCard({ course, tags }: { course: CourseWithProgress; tags?: { name: string }[] }) {
   const progressPercent =
     course.total_lessons > 0
       ? Math.round((course.completed_lessons / course.total_lessons) * 100)
@@ -26,12 +16,16 @@ export function CourseCard({ course }: { course: CourseWithProgress }) {
       <div className="group rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 transition-all hover:border-[var(--primary)]/40 hover:shadow-lg hover:shadow-[var(--primary)]/5">
         {/* Header */}
         <div className="mb-4 flex items-start justify-between">
-          <Badge
-            variant="outline"
-            className={tierColors[course.tier] || tierColors.beginner}
-          >
-            {course.tier}
-          </Badge>
+          <div className="flex flex-wrap gap-1.5">
+            {(tags || []).map((tag) => (
+              <span
+                key={tag.name}
+                className="rounded-full bg-[var(--primary)]/10 px-2.5 py-0.5 text-[10px] font-medium text-[var(--primary)]"
+              >
+                {tag.name}
+              </span>
+            ))}
+          </div>
           {isCompleted && (
             <span className="text-sm text-[var(--primary)]">✓ Completed</span>
           )}
