@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .f {
+      visibility: hidden;
+      animation: show 0.75s linear infinite;
+    }
+    .f0 { animation-delay: 0s; }
+    .f1 { animation-delay: -0.625s; }
+    .f2 { animation-delay: -0.5s; }
+    .f3 { animation-delay: -0.375s; }
+    .f4 { animation-delay: -0.25s; }
+    .f5 { animation-delay: -0.125s; }
+    @keyframes show {
+      0%, 16.5%  { visibility: visible; }
+      16.6%, 100% { visibility: hidden; }
+    }
+  </style>
+  <rect width="32" height="32" rx="5" fill="#0A0A0A"/>
+  <text class="f f0" x="16" y="22" text-anchor="middle" font-size="20" fill="#3ECF8E" font-family="sans-serif">✶</text>
+  <text class="f f1" x="16" y="22" text-anchor="middle" font-size="20" fill="#3ECF8E" font-family="sans-serif">✸</text>
+  <text class="f f2" x="16" y="22" text-anchor="middle" font-size="20" fill="#3ECF8E" font-family="sans-serif">✹</text>
+  <text class="f f3" x="16" y="22" text-anchor="middle" font-size="20" fill="#3ECF8E" font-family="sans-serif">✺</text>
+  <text class="f f4" x="16" y="22" text-anchor="middle" font-size="20" fill="#3ECF8E" font-family="sans-serif">✹</text>
+  <text class="f f5" x="16" y="22" text-anchor="middle" font-size="20" fill="#3ECF8E" font-family="sans-serif">✸</text>
+</svg>

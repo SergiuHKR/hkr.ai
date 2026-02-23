@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     default: "HKR.AI — AI Consulting Platform",
     template: "%s — HKR.AI",
   },
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+  },
   description:
     "AI consulting, training, and transformation for mid-market companies. Real agentic workflows for real business cases.",
   metadataBase: new URL("https://dev.hkr.ai"),
