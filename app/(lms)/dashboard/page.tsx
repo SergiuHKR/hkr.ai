@@ -23,7 +23,8 @@ export default async function DashboardPage() {
     supabase,
     user.id,
     user.user_metadata?.full_name,
-    user.user_metadata?.avatar_url
+    user.user_metadata?.avatar_url,
+    user.email
   );
 
   const level = getLevelForXp(profile.total_xp);

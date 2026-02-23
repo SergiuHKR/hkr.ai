@@ -1,9 +1,10 @@
 import { createClient } from "@/lib/supabase/server";
+import { OrgDomains } from "@/components/admin/org-domains";
+import { OrgAllowlist } from "@/components/admin/org-allowlist";
 
 export default async function AdminOrgPage() {
   const supabase = await createClient();
 
-  // Get current user's org
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -17,27 +18,22 @@ export default async function AdminOrgPage() {
 
   const orgId = profile?.org_id;
 
-  // Get org details
   const { data: org } = orgId
     ? await supabase.from("organizations").select("*").eq("id", orgId).single()
     : { data: null };
 
-  // Get domains
   const { data: domains } = orgId
     ? await supabase.from("org_domains").select("*").eq("org_id", orgId).order("domain")
     : { data: [] };
 
-  // Get allowlist
   const { data: allowlist } = orgId
     ? await supabase.from("org_allowlist").select("*").eq("org_id", orgId).order("email")
     : { data: [] };
 
-  // Get teams
   const { data: teams } = orgId
     ? await supabase.from("teams").select("*").eq("org_id", orgId).order("name")
     : { data: [] };
 
-  // Get mandatory courses
   const { data: courseSettings } = orgId
     ? await supabase.from("org_course_settings").select("*, courses(title, slug)").eq("org_id", orgId)
     : { data: [] };
@@ -57,47 +53,11 @@ export default async function AdminOrgPage() {
             </div>
           </div>
 
-          {/* Domains */}
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-5">
-            <h2 className="mb-4 text-sm font-semibold">
-              SSO Domains ({domains?.length || 0})
-            </h2>
-            <p className="mb-3 text-xs text-[var(--muted-foreground)]">
-              Users with these email domains are auto-assigned to this org on login.
-            </p>
-            {domains && domains.length > 0 ? (
-              <div className="space-y-1">
-                {domains.map((d: { id: string; domain: string }) => (
-                  <div key={d.id} className="flex items-center gap-2 rounded-lg bg-[var(--background)] px-3 py-2 font-mono text-sm">
-                    @{d.domain}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-xs text-[var(--muted-foreground)]">No domains configured.</p>
-            )}
-          </div>
+          {/* Domains — interactive */}
+          <OrgDomains domains={(domains || []) as { id: string; domain: string }[]} />
 
-          {/* Allowlist */}
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-5">
-            <h2 className="mb-4 text-sm font-semibold">
-              Email Allowlist ({allowlist?.length || 0})
-            </h2>
-            <p className="mb-3 text-xs text-[var(--muted-foreground)]">
-              Individual emails allowed access regardless of domain.
-            </p>
-            {allowlist && allowlist.length > 0 ? (
-              <div className="space-y-1">
-                {allowlist.map((a: { id: string; email: string }) => (
-                  <div key={a.id} className="rounded-lg bg-[var(--background)] px-3 py-2 font-mono text-sm">
-                    {a.email}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-xs text-[var(--muted-foreground)]">No individual emails in allowlist.</p>
-            )}
-          </div>
+          {/* Allowlist — interactive */}
+          <OrgAllowlist allowlist={(allowlist || []) as { id: string; email: string }[]} />
 
           {/* Teams */}
           <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-5">

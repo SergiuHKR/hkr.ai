@@ -253,6 +253,75 @@ Align codebase and schema with decisions made during SCHEMA.md + PRODUCT.md revi
 
 ---
 
+## Phase 8: Bootstrap & Onboarding Fixes
+
+Critical issues found during first real-user testing (2026-02-23).
+
+### Profile Auto-Creation (CRITICAL)
+- [x] Supabase trigger on `auth.users` INSERT to auto-create `user_profiles` row
+- [x] Domain-based org matching in trigger (email domain → `org_domains` → org_id)
+- [x] Fallback to `org_allowlist` for exact email match
+- [x] Default team assignment (slug='general' within matched org)
+- [x] Backfill existing `auth.users` rows that lack `user_profiles` entries
+- [x] Update `getOrCreateProfile()` to use domain-based matching (remove hardcoded HKR slug)
+
+**Root cause:** Profile creation was lazy — only happened on first lesson completion via `getOrCreateProfile()`. Users who logged in but didn't complete a lesson had no profile, making them invisible to the platform. The `StatsHeader` component also calls `getOrCreateProfile` but silently swallows errors.
+
+**Fixed:** Migration `20260223020000_auto_profile_trigger.sql` adds DB trigger + backfills. Costin Dinoiu now has a profile. All callers of `getOrCreateProfile()` now pass `user.email` for domain matching.
+
+### Data Integrity Fixes
+- [x] Fix Sergiu's `user_profiles.org_id` (was `null`, now HKR org) — fixed by backfill in migration
+- [x] Verify all `auth.users` have corresponding `user_profiles` rows — confirmed: 2/2
+
+### TODO.md Audit (Phase 6 items marked done but not fully implemented)
+- [x] Re-verify: "On Google SSO login: check email domain against `org_domains`" — now handled by DB trigger on auth.users INSERT
+- [x] Re-verify: "Auto-assign org_id + default team on first login if domain matches" — now handled by DB trigger + `getOrCreateProfile()` fallback
+- [ ] Re-verify: "Reject login if no org match found" — not implemented in auth callback (profile gets created with null org_id, but login is not blocked)
+
+---
+
+## Phase 9: Admin CRUD
+
+All admin pages are currently read-only. This phase adds real Create/Update/Delete operations via Server Actions.
+
+### Org: Domains & Allowlist
+- [x] Add domain: inline form on org page to add SSO domain
+- [x] Remove domain: delete button per domain row
+- [x] Add allowlist email: inline form to add email to allowlist
+- [x] Remove allowlist email: delete button per email row
+
+### Courses: Full CRUD
+- [x] Create course: form (title, slug, description, tier, is_published)
+- [x] Edit course: modal edit for course metadata
+- [x] Delete course: delete button with confirmation dialog
+- [x] Toggle publish: click Published/Draft badge to toggle
+- [x] Create module: form within course detail page (title, slug, sort_order)
+- [x] Edit module: modal edit module title
+- [x] Delete module: delete with confirmation dialog
+- [x] Create lesson: form within module (title, slug, type, content_md, duration, xp_reward, sort_order)
+- [x] Edit lesson: modal edit lesson content and metadata
+- [x] Delete lesson: delete with confirmation dialog
+- [x] Course detail page (`/admin/courses/[id]`) — modules + lessons tree view
+
+### Tags: CRUD
+- [x] Create tag: dialog form (name, slug, description)
+- [x] Edit tag: dialog edit tag fields
+- [x] Delete tag: delete with confirmation dialog
+
+### Users: Role & Tag Management
+- [x] Change user role: visual role picker in manage dialog
+- [x] Assign tags to user: tag toggle chips per user
+- [x] Assign user to team: dropdown to change team
+
+### Course-Tag Assignment
+- [x] Assign tags to course: checkbox dialog on course list
+
+### Infrastructure
+- [x] Server Actions (`app/(lms)/admin/actions.ts`) — all admin mutations
+- [x] RLS admin write policies for courses, modules, lessons, user_profiles (migration `20260223030000`)
+
+---
+
 ## Quick Reference: What Exists Today
 
 ### Pages (all functional)
@@ -273,12 +342,13 @@ Align codebase and schema with decisions made during SCHEMA.md + PRODUCT.md revi
 | `/profile` | Working | Edit display name + avatar |
 | `/certificates/[id]` | Working | Certificate view page |
 | `/admin` | Working | Overview dashboard (admin/super_admin only) |
-| `/admin/users` | Working | User management + role assignment |
-| `/admin/courses` | Working | Course CRUD |
-| `/admin/tags` | Working | Tag management |
-| `/admin/achievements` | Working | Achievement management |
-| `/admin/seasons` | Working | Season management |
-| `/admin/org` | Working | Org domains + email allowlist |
+| `/admin/users` | Working | User list + manage dialog (role, tags, team) |
+| `/admin/courses` | Working | Course CRUD + publish toggle + tag assignment |
+| `/admin/courses/[id]` | Working | Module + lesson CRUD tree view |
+| `/admin/tags` | Working | Tag CRUD (create, edit, delete) |
+| `/admin/achievements` | Read-only | Lists achievements — no CRUD yet |
+| `/admin/seasons` | Read-only | Lists seasons — no CRUD yet |
+| `/admin/org` | Working | Add/remove SSO domains + allowlist emails |
 
 ### Database (deployed to Supabase)
 | Table | Status |

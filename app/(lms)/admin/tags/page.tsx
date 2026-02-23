@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { CreateTagButton, EditTagButton, DeleteTagButton } from "@/components/admin/tag-forms";
 
 export default async function AdminTagsPage() {
   const supabase = await createClient();
@@ -29,9 +30,12 @@ export default async function AdminTagsPage() {
     <div>
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Tags</h1>
-        <span className="text-sm text-[var(--muted-foreground)]">
-          {tags?.length || 0} tags
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-[var(--muted-foreground)]">
+            {tags?.length || 0} tags
+          </span>
+          <CreateTagButton />
+        </div>
       </div>
 
       {(!tags || tags.length === 0) ? (
@@ -51,6 +55,7 @@ export default async function AdminTagsPage() {
                 <th className="px-4 py-3 font-medium">Description</th>
                 <th className="px-4 py-3 font-medium">Users</th>
                 <th className="px-4 py-3 font-medium">Courses</th>
+                <th className="px-4 py-3 font-medium w-20">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--border)]">
@@ -68,6 +73,12 @@ export default async function AdminTagsPage() {
                     <td className="px-4 py-3 text-[var(--muted-foreground)]">{tag.description || "—"}</td>
                     <td className="px-4 py-3 font-mono">{usage?.users || 0}</td>
                     <td className="px-4 py-3 font-mono">{usage?.courses || 0}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <EditTagButton tag={tag} />
+                        <DeleteTagButton tagId={tag.id} name={tag.name} />
+                      </div>
+                    </td>
                   </tr>
                 );
               })}

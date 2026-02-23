@@ -17,7 +17,8 @@ export async function StatsHeader() {
       supabase,
       user.id,
       user.user_metadata?.full_name,
-      user.user_metadata?.avatar_url
+      user.user_metadata?.avatar_url,
+      user.email
     );
 
     if (!profile) return null;

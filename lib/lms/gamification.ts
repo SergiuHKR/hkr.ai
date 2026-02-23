@@ -37,12 +37,19 @@ export type TeamStanding = {
   team_xp: number;
 };
 
-/** Get or create user profile */
+/**
+ * Get or create user profile.
+ *
+ * Primary creation is handled by DB trigger `on_auth_user_created`
+ * (migration 20260223020000). This function is a safety net — if the
+ * trigger didn't fire, we create the profile here with domain-based org matching.
+ */
 export async function getOrCreateProfile(
   supabase: SupabaseClient,
   userId: string,
   displayName?: string | null,
-  avatarUrl?: string | null
+  avatarUrl?: string | null,
+  email?: string | null
 ): Promise<UserProfile> {
   const { data: existing } = await supabase
     .from("user_profiles")
@@ -52,17 +59,34 @@ export async function getOrCreateProfile(
 
   if (existing) return existing;
 
-  // Create new profile — try to assign HKR org/team as defaults
+  // Profile missing (trigger may have failed) — create with domain matching
   let orgId: string | null = null;
   let teamId: string | null = null;
 
   try {
-    const { data: hkrOrg } = await supabase
-      .from("organizations")
-      .select("id")
-      .eq("slug", "hkr")
-      .single();
-    orgId = hkrOrg?.id || null;
+    if (email) {
+      const domain = email.split("@")[1];
+      if (domain) {
+        const { data: domainMatch } = await supabase
+          .from("org_domains")
+          .select("org_id")
+          .eq("domain", domain)
+          .limit(1)
+          .single();
+        orgId = domainMatch?.org_id || null;
+      }
+
+      // Fallback: exact email match in org_allowlist
+      if (!orgId) {
+        const { data: emailMatch } = await supabase
+          .from("org_allowlist")
+          .select("org_id")
+          .eq("email", email)
+          .limit(1)
+          .single();
+        orgId = emailMatch?.org_id || null;
+      }
+    }
 
     if (orgId) {
       const { data: generalTeam } = await supabase
@@ -90,7 +114,7 @@ export async function getOrCreateProfile(
     .single();
 
   if (error) {
-    // If insert fails (e.g. race condition), try reading again
+    // If insert fails (e.g. race condition with trigger), try reading again
     const { data: retryProfile } = await supabase
       .from("user_profiles")
       .select("*")

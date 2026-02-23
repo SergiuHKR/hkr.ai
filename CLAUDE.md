@@ -97,6 +97,17 @@ Text tertiary:   #71717A
 
 When testing the live site, use the Vercel fallback URL if `dev.hkr.ai` isn't resolving yet.
 
+## Workflow: TODO-First Development
+
+Every coding task follows this strict loop:
+
+1. **Plan** — Write the task in `TODO.md` before writing any code
+2. **Code** — Implement the change
+3. **Verify** — Test that it works (preview, build, manual check)
+4. **Mark complete** — Check off the item in `TODO.md` only after verification passes
+
+Never skip steps. Never mark done before verifying.
+
 ## Build Priority
 
 CMS is easiest — ship first. LMS is most urgent — internal team adoption. See `TODO.md` for the full phased checklist.

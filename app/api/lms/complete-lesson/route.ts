@@ -29,7 +29,8 @@ export async function POST(request: NextRequest) {
     supabase,
     user.id,
     user.user_metadata?.full_name,
-    user.user_metadata?.avatar_url
+    user.user_metadata?.avatar_url,
+    user.email
   );
 
   // 2. Insert user_progress (idempotent — unique constraint will prevent duplicates)
