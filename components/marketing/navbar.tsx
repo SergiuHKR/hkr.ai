@@ -17,17 +17,17 @@ export function Navbar() {
         {/* Desktop nav */}
         <div className="hidden items-center gap-8 md:flex">
           <Link
-            href="/learn"
+            href="/academy"
             className="text-sm text-[var(--muted-foreground)] transition-colors hover:text-white"
           >
             AI Academy
           </Link>
-          <a
-            href="#contact"
+          <Link
+            href="/login"
             className="rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] transition-colors hover:bg-[var(--accent-hover)]"
           >
-            Get Started
-          </a>
+            Platform
+          </Link>
         </div>
 
         {/* Mobile toggle */}
@@ -65,19 +65,19 @@ export function Navbar() {
       {mobileOpen && (
         <div className="border-t border-[var(--border)] bg-[var(--background)] px-6 py-4 md:hidden">
           <Link
-            href="/learn"
+            href="/academy"
             className="block py-2 text-sm text-[var(--muted-foreground)] hover:text-white"
             onClick={() => setMobileOpen(false)}
           >
             AI Academy
           </Link>
-          <a
-            href="#contact"
+          <Link
+            href="/login"
             className="mt-2 inline-block rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)]"
             onClick={() => setMobileOpen(false)}
           >
-            Get Started
-          </a>
+            Platform
+          </Link>
         </div>
       )}
     </nav>

@@ -27,7 +27,7 @@ export function CaseStudies() {
             Case Studies
           </h2>
           <p className="mt-3 text-[var(--muted-foreground)]">
-            Real AI agents solving real business problems.
+            Real AI agents and workflows our teams have built to solve real business problems. Now public for the world to see.
           </p>
         </div>
 
