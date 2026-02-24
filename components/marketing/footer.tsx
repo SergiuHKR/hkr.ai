@@ -5,7 +5,7 @@ const columns = [
     title: "Platform",
     links: [
       { label: "Case Studies", href: "/articles" },
-      { label: "AI Academy", href: "/learn" },
+      { label: "Learning platform", href: "/learn" },
       { label: "Leaderboard", href: "/leaderboard" },
     ],
   },
