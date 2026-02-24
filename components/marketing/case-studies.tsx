@@ -5,12 +5,20 @@ const FEATURED_SLUGS = [
   "ai-sales-pipeline-agent",
   "ai-document-processing-agent",
   "ai-onboarding-agent",
+  "ai-customer-support-agent",
+  "ai-email-triage-agent",
+  "ai-lead-scoring-agent",
+  "ai-meeting-summarizer-agent",
+  "ai-knowledge-base-agent",
+  "ai-compliance-monitoring-agent",
 ];
 
 const categoryIcons: Record<string, string> = {
   "Sales & Revenue": "📈",
   "Finance & Operations": "📄",
   "HR & People Ops": "👥",
+  "Customer Support": "💬",
+  "Operations": "⚙️",
 };
 
 export function CaseStudies() {
