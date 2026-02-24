@@ -5,13 +5,13 @@ import { Footer } from "@/components/marketing/footer";
 
 export default function Home() {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Navbar />
       <main id="main-content">
-      <Hero />
-      <CaseStudies />
+        <Hero />
+        <CaseStudies />
       </main>
-      <Footer />
-    </>
+      <Footer className="mt-auto" />
+    </div>
   );
 }

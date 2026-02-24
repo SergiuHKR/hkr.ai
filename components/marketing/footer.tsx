@@ -18,9 +18,9 @@ const columns = [
   },
 ];
 
-export function Footer() {
+export function Footer({ className }: { className?: string }) {
   return (
-    <footer className="border-t border-[var(--border)] bg-[#080808] px-6 py-16">
+    <footer className={`border-t border-[var(--border)] bg-[#080808] px-6 py-16 ${className ?? ""}`}>
       <div className="mx-auto flex max-w-6xl flex-col gap-12 md:flex-row md:items-start">
         {/* Brand */}
         <div className="md:mr-auto">

@@ -57,7 +57,7 @@ const features = [
 
 export default function AcademyPage() {
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Navbar />
       <main id="main-content" className="pt-16">
         {/* Hero */}
@@ -186,7 +186,7 @@ export default function AcademyPage() {
           </div>
         </section>
       </main>
-      <Footer />
-    </>
+      <Footer className="mt-auto" />
+    </div>
   );
 }
