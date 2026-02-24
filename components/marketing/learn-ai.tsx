@@ -1,13 +1,11 @@
 import Link from "next/link";
 
-// Positions + delays for the pulsing agent-node animation
-const NODES = [
-  { top: "18%", left: "10%", delay: "0s",   size: "h-2 w-2" },
-  { top: "68%", left: "18%", delay: "0.9s", size: "h-3 w-3" },
-  { top: "32%", left: "46%", delay: "1.7s", size: "h-2 w-2" },
-  { top: "74%", left: "56%", delay: "0.4s", size: "h-3 w-3" },
-  { top: "14%", left: "74%", delay: "1.2s", size: "h-2 w-2" },
-  { top: "52%", left: "88%", delay: "0.6s", size: "h-2 w-2" },
+// Animated skill progress bars — simulates a live training dashboard
+const SKILLS = [
+  { name: "Prompt Engineering", pct: 82, delay: "0s" },
+  { name: "AI Workflows", pct: 64, delay: "0.4s" },
+  { name: "Agent Design", pct: 41, delay: "0.8s" },
+  { name: "Data Analysis", pct: 97, delay: "1.2s" },
 ];
 
 export function LearnAI() {
@@ -27,67 +25,80 @@ export function LearnAI() {
         {/* Bento grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
 
-          {/* ── Left: animated showcase (2col × 2row) ── */}
+          {/* ── Left: training dashboard visualization (2col × 2row) ── */}
           <div className="relative min-h-[360px] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] md:col-span-2 md:row-span-2">
-            {/* Green gradient wash */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--primary)]/10 via-transparent to-transparent" />
-
-            {/* Pulsing agent nodes */}
-            {NODES.map((node, i) => (
-              <span
-                key={i}
-                className={`pointer-events-none absolute flex ${node.size}`}
-                style={{ top: node.top, left: node.left }}
-              >
-                <span
-                  className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--primary)] opacity-50"
-                  style={{ animationDelay: node.delay }}
-                />
-                <span className="relative inline-flex h-full w-full rounded-full bg-[var(--primary)] opacity-80" />
-              </span>
-            ))}
+            {/* Gradient wash */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[var(--primary)]/8 via-transparent to-transparent" />
 
             {/* Content */}
             <div className="relative flex h-full flex-col justify-between p-8">
               <div>
                 <span className="inline-block rounded-full border border-[var(--primary)]/30 bg-[var(--primary)]/10 px-3 py-1 text-xs font-medium text-[var(--primary)]">
-                  Live in production
+                  Private training platform
                 </span>
                 <h3 className="mt-5 text-2xl font-bold leading-snug md:text-3xl">
-                  AI agents solving real business problems.
+                  Make your team fluent in AI.
                 </h3>
-                <p className="mt-3 max-w-md text-[var(--muted-foreground)]">
-                  We build and deploy autonomous agents across sales, finance,
-                  HR, and operations. Every agent below is running for a real
-                  client.
+                <p className="mt-3 max-w-lg text-[var(--muted-foreground)]">
+                  Structured courses, hands-on exercises, and real-world
+                  scenarios — designed so your team actually uses AI at work, not
+                  just reads about it.
                 </p>
               </div>
+
+              {/* Animated skill progress bars */}
+              <div className="mt-8 max-w-md space-y-4">
+                {SKILLS.map((skill) => (
+                  <div key={skill.name}>
+                    <div className="mb-1.5 flex justify-between text-xs">
+                      <span className="text-[var(--muted-foreground)]">
+                        {skill.name}
+                      </span>
+                      <span className="font-mono text-[var(--primary)]">
+                        {skill.pct}%
+                      </span>
+                    </div>
+                    <div className="h-1.5 rounded-full bg-white/5">
+                      <div
+                        className="h-full rounded-full bg-[var(--primary)]"
+                        style={{
+                          width: `${skill.pct}%`,
+                          animation: "pulse 2.5s ease-in-out infinite",
+                          animationDelay: skill.delay,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               <Link
-                href="/articles"
+                href="/academy"
                 className="mt-8 inline-flex w-fit text-sm font-medium text-[var(--primary)] transition-opacity hover:opacity-80"
               >
-                Browse all case studies →
+                Start learning →
               </Link>
             </div>
           </div>
 
-          {/* ── Right: learning platform card (1col × 2row) ── */}
+          {/* ── Right: gamification card (1col × 2row) ── */}
           <Link
             href="/academy"
             className="group flex flex-col rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 transition-all hover:border-[var(--primary)]/30 hover:-translate-y-1 md:row-span-2"
           >
             <div className="mb-4 flex items-center gap-2">
-              <span className="text-2xl">🎓</span>
+              <span className="text-2xl">🏆</span>
               <span className="rounded-full bg-[var(--primary)]/10 px-3 py-1 text-xs font-medium text-[var(--primary)]">
-                Learning platform
+                Gamified
               </span>
             </div>
             <h3 className="mb-2 text-lg font-bold leading-snug transition-colors group-hover:text-[var(--primary)]">
-              Train your team on the same AI workflows we use.
+              XP, levels, leaderboards. Learning that sticks.
             </h3>
             <p className="flex-1 text-sm leading-relaxed text-[var(--muted-foreground)]">
-              Gamified courses, XP, leaderboards, and certificates — built for
-              companies that want measurable AI adoption across their teams.
+              Every lesson earns XP. Every milestone unlocks a new level. Your
+              team competes on a live leaderboard — turning AI training into
+              something people actually want to finish.
             </p>
             <span className="mt-6 text-sm font-medium text-[var(--primary)] opacity-0 transition-opacity group-hover:opacity-100">
               Explore the platform →
