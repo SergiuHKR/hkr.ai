@@ -20,13 +20,13 @@ export function Navbar() {
             href="/academy"
             className="text-sm text-[var(--muted-foreground)] transition-colors hover:text-white"
           >
-            AI Academy
+            Learning platform
           </Link>
           <Link
             href="/login"
             className="rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] transition-colors hover:bg-[var(--accent-hover)]"
           >
-            Platform
+            Access
           </Link>
         </div>
 
@@ -69,14 +69,14 @@ export function Navbar() {
             className="block py-2 text-sm text-[var(--muted-foreground)] hover:text-white"
             onClick={() => setMobileOpen(false)}
           >
-            AI Academy
+            Learning platform
           </Link>
           <Link
             href="/login"
             className="mt-2 inline-block rounded-full bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)]"
             onClick={() => setMobileOpen(false)}
           >
-            Platform
+            Access
           </Link>
         </div>
       )}
