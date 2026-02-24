@@ -130,6 +130,10 @@ export function EditCourseButton({ course }: { course: Course }) {
             <Input name="title" required defaultValue={course.title} className="bg-[var(--background)]" />
           </div>
           <div>
+            <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Slug</label>
+            <Input name="slug" required defaultValue={course.slug} className="bg-[var(--background)] font-mono" />
+          </div>
+          <div>
             <label className="mb-1 block text-xs text-[var(--muted-foreground)]">Description</label>
             <Textarea name="description" rows={3} defaultValue={course.description || ""} className="bg-[var(--background)]" />
           </div>

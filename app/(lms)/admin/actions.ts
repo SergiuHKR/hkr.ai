@@ -177,18 +177,23 @@ export async function createCourse(formData: FormData) {
 
 export async function updateCourse(courseId: string, formData: FormData) {
   const title = (formData.get("title") as string)?.trim();
+  const slug = (formData.get("slug") as string)?.trim().toLowerCase().replace(/\s+/g, "-");
   const description = (formData.get("description") as string)?.trim() || null;
   const is_published = formData.get("is_published") === "true";
 
   if (!title) return { error: "Title is required" };
+  if (!slug) return { error: "Slug is required" };
 
   const { supabase } = await requireAdmin();
   const { error } = await supabase
     .from("courses")
-    .update({ title, description, is_published })
+    .update({ title, slug, description, is_published })
     .eq("id", courseId);
 
-  if (error) return { error: error.message };
+  if (error) {
+    if (error.code === "23505") return { error: "Course slug already exists" };
+    return { error: error.message };
+  }
   revalidatePath("/admin/courses");
   return { success: true };
 }
