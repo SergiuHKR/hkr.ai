@@ -132,6 +132,11 @@
     font-family: var(--font-sans), sans-serif;
   }
 
+  /* Pointer cursor for all interactive elements */
+  a, button, [role="button"], input[type="submit"], input[type="reset"], input[type="button"], select, summary {
+    cursor: pointer;
+  }
+
   /* DM Serif Display — h1, h2, h5, h6 (mirrors hkr.team hierarchy) */
   h1, h2, h5, h6 {
     font-family: var(--font-serif), serif;
