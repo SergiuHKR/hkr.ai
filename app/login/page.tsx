@@ -34,7 +34,7 @@ function LoginForm() {
     <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-8">
       <h1 className="mb-2 text-xl font-bold">Sign in</h1>
       <p className="mb-6 text-sm text-[var(--muted-foreground)]">
-        Use your Google account to access AI Academy.
+        Use your Google account to access the Learning Platform.
       </p>
 
       {error && (

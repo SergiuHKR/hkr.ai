@@ -76,7 +76,7 @@ export default async function CertificatePage({ params }: Props) {
         <div className="flex items-center justify-center gap-1 text-sm">
           <span className="font-bold text-white">HKR</span>
           <span className="font-bold text-[var(--primary)]">.AI</span>
-          <span className="ml-2 text-[var(--muted-foreground)]">AI Academy</span>
+          <span className="ml-2 text-[var(--muted-foreground)]">Learning Platform</span>
         </div>
       </div>
     </main>

@@ -26,7 +26,7 @@ export default async function LessonPage({
       {/* Breadcrumb */}
       <nav className="mb-8 text-sm text-[var(--muted-foreground)]">
         <Link href="/learn" className="hover:text-white transition-colors">
-          AI Academy
+          Learning Platform
         </Link>
         <span className="mx-2">›</span>
         <Link

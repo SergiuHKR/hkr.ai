@@ -2,12 +2,24 @@ import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/lms/sign-out-button";
 import { CourseCard } from "@/components/lms/course-card";
 import { getCoursesWithProgress } from "@/lib/lms/queries";
+import { AcademyContent } from "@/components/marketing/academy-content";
+
+export const metadata = {
+  title: "Learning Platform | HKR.AI",
+  description:
+    "Private AI training platform for companies looking to onboard and upskill teams on AI. Gamified, structured, and measurable.",
+};
 
 export default async function LearnPage() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Public visitors see the marketing landing page
+  if (!user) {
+    return <AcademyContent />;
+  }
 
   const courses = await getCoursesWithProgress(supabase);
 
@@ -27,7 +39,7 @@ export default async function LearnPage() {
       {/* Header */}
       <div className="mb-10 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">AI Academy</h1>
+          <h1 className="text-3xl font-bold">Learning Platform</h1>
           <p className="mt-1 text-[var(--muted-foreground)]">
             Welcome, {user?.user_metadata?.full_name || user?.email}
           </p>

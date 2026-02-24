@@ -82,7 +82,7 @@ export function LearnAI() {
               </div>
 
               <Link
-                href="/academy"
+                href="/learn"
                 className="mt-8 inline-flex w-fit text-sm font-medium text-[var(--primary)] transition-opacity hover:opacity-80"
               >
                 Start learning →
@@ -92,7 +92,7 @@ export function LearnAI() {
 
           {/* ── Right: gamification card with dashboard mockup (1col × 2row) ── */}
           <Link
-            href="/academy"
+            href="/learn"
             className="group relative flex flex-col overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)] transition-all hover:border-[var(--primary)]/30 hover:-translate-y-1 md:row-span-2"
           >
             {/* ── Text content on top ── */}

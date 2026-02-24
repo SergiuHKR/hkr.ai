@@ -7,7 +7,7 @@ import type { SystemRole } from "@/lib/lms/roles";
 import type { Level } from "@/lib/lms/levels";
 
 const baseLinks = [
-  { label: "AI Academy", href: "/learn" },
+  { label: "Learning Platform", href: "/learn" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Leaderboard", href: "/leaderboard" },
   { label: "Use Cases", href: "/articles" },

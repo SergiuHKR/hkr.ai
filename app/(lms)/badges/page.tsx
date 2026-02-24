@@ -23,7 +23,7 @@ export default async function BadgesPage() {
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm text-[var(--muted-foreground)]">
         <Link href="/learn" className="hover:text-white transition-colors">
-          AI Academy
+          Learning Platform
         </Link>
         <span className="mx-2">&rsaquo;</span>
         <Link href="/dashboard" className="hover:text-white transition-colors">

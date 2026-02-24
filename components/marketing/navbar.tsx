@@ -17,7 +17,7 @@ export function Navbar() {
         {/* Desktop nav */}
         <div className="hidden items-center gap-8 md:flex">
           <Link
-            href="/academy"
+            href="/learn"
             className="text-sm text-[var(--muted-foreground)] transition-colors hover:text-white"
           >
             Learning platform
@@ -65,7 +65,7 @@ export function Navbar() {
       {mobileOpen && (
         <div className="border-t border-[var(--border)] bg-[var(--background)] px-6 py-4 md:hidden">
           <Link
-            href="/academy"
+            href="/learn"
             className="block py-2 text-sm text-[var(--muted-foreground)] hover:text-white"
             onClick={() => setMobileOpen(false)}
           >

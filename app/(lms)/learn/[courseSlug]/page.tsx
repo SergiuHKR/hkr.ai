@@ -66,7 +66,7 @@ export default async function CourseDetailPage({
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm text-[var(--muted-foreground)]">
         <Link href="/learn" className="hover:text-white transition-colors">
-          AI Academy
+          Learning Platform
         </Link>
         <span className="mx-2">›</span>
         <span className="text-white">{course.title}</span>

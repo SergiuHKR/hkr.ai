@@ -31,7 +31,7 @@ export default async function LeaderboardPage() {
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm text-[var(--muted-foreground)]">
         <Link href="/learn" className="hover:text-white transition-colors">
-          AI Academy
+          Learning Platform
         </Link>
         <span className="mx-2">&rsaquo;</span>
         <span className="text-white">Leaderboard</span>

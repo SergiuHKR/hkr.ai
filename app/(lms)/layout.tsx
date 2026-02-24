@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { LmsNavbar } from "@/components/lms/lms-navbar";
 import { StatsHeader } from "@/components/lms/stats-header";
@@ -19,6 +20,14 @@ export default async function LMSLayout({
   } = await supabase.auth.getUser();
 
   if (!user) {
+    // /learn is public — shows marketing page for unauthenticated visitors.
+    // All other LMS routes require auth (middleware handles redirect,
+    // this is a safety net).
+    const headersList = await headers();
+    const pathname = headersList.get("x-pathname") || "";
+    if (pathname === "/learn") {
+      return <>{children}</>;
+    }
     redirect("/login");
   }
 
