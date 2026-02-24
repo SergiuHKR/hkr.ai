@@ -28,7 +28,7 @@ export function CaseStudies() {
   ).filter(Boolean);
 
   return (
-    <section className="px-6 pb-24">
+    <section className="px-6 pb-40 pt-16">
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 text-center">
           <h2 className="text-3xl font-bold tracking-tight md:text-4xl">

@@ -12,7 +12,7 @@ const NODES = [
 
 export function LearnAI() {
   return (
-    <section className="px-6 pb-16">
+    <section className="px-6 pb-32 pt-16">
       <div className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-10 text-center">
